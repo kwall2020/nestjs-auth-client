@@ -10,6 +10,6 @@ export class AppComponent {
   constructor(private auth: AuthService) {}
 
   onTestClick() {
-    this.auth.authenticate('kwall2004@gmail.com', '@P05tr0ph39');
+    this.auth.authenticate('kwall2004@gmail.com', '9lS*8Wbl^z0N*Ugn');
   }
 }

@@ -3,5 +3,6 @@
   "prettier.singleQuote": true,
   "javascript.preferences.quoteStyle": "single",
   "prettier.jsxSingleQuote": true,
-  "prettier.useEditorConfig": false
+  "prettier.useEditorConfig": false,
+  "editor.formatOnSave": true
 }

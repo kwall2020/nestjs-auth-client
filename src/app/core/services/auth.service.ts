@@ -17,7 +17,7 @@ export class AuthService {
   authenticate(username: string, password: string) {
     const userPoolData: ICognitoUserPoolData = {
       UserPoolId: 'us-east-1_8QRhH1UKX',
-      ClientId: '7s4ipjgfm88hhotdbfhl7kdgb4'
+      ClientId: '31ti93njpc4gsuusg756ts0m2t'
     };
     const userData: ICognitoUserData = {
       Username: username,
@@ -30,6 +30,21 @@ export class AuthService {
     });
 
     cognitoUser.authenticateUser(authenticationDetails, {
+      newPasswordRequired: (userAttributes: any, requiredAttributes: any) => {
+        console.log(
+          'new password required',
+          userAttributes,
+          requiredAttributes
+        );
+        cognitoUser.completeNewPasswordChallenge(
+          '9lS*8Wbl^z0N*Ugn',
+          requiredAttributes,
+          {
+            onSuccess: (session: CognitoUserSession) => console.log(session),
+            onFailure: (err: any) => console.log(err)
+          }
+        );
+      },
       onSuccess: (
         session: CognitoUserSession,
         userConfirmationNecessary: boolean

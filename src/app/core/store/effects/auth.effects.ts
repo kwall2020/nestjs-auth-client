@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {
+  Actions,
+  createEffect,
+  ofType,
+  ROOT_EFFECTS_INIT
+} from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { CognitoUserSession } from 'amazon-cognito-identity-js';
+import { catchError, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AuthService } from '../../services';
-import { CoreState } from '../reducers';
 import * as AuthActions from '../actions/auth.actions';
+import { CoreState } from '../reducers';
 import * as AuthSelectors from '../selectors/auth.selectors';
-import { CognitoUserSession } from 'amazon-cognito-identity-js';
 
 @Injectable()
 export class AuthEffects {
@@ -17,13 +22,26 @@ export class AuthEffects {
     private authService: AuthService
   ) {}
 
-  get$ = createEffect(() =>
+  init$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.get),
+      ofType(ROOT_EFFECTS_INIT),
+      map(() =>
+        AuthActions.init({
+          userName: localStorage.getItem('userName'),
+          token: localStorage.getItem('token'),
+          refreshToken: localStorage.getItem('refreshToken')
+        })
+      )
+    )
+  );
+
+  request$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.request),
       mergeMap(action =>
         this.authService.authenticate(action.userName, action.password).pipe(
           mergeMap((response: CognitoUserSession) => [
-            AuthActions.store({
+            AuthActions.receive({
               userName: action.userName,
               token: response.getAccessToken().getJwtToken(),
               refreshToken: response.getRefreshToken().getToken()
@@ -48,7 +66,7 @@ export class AuthEffects {
       mergeMap(([_, userName, refreshToken]) =>
         this.authService.refresh(userName, refreshToken).pipe(
           mergeMap((response: any) => [
-            AuthActions.store({
+            AuthActions.receive({
               userName,
               token: response.accessToken.token,
               refreshToken: response.refreshToken
@@ -63,16 +81,23 @@ export class AuthEffects {
     )
   );
 
-  store$ = createEffect(() =>
+  receive$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.store),
+      ofType(AuthActions.receive),
       tap({
         next: action => {
+          if (action.userName) {
+            localStorage.setItem('userName', action.userName);
+          } else {
+            localStorage.removeItem('userName');
+          }
+
           if (action.token) {
             localStorage.setItem('token', action.token);
           } else {
             localStorage.removeItem('token');
           }
+
           if (action.refreshToken) {
             localStorage.setItem('refreshToken', action.refreshToken);
           } else {

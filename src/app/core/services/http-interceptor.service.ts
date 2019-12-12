@@ -11,8 +11,8 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, mergeMap, skipWhile, take } from 'rxjs/operators';
 
 import * as AuthActions from '../store/actions/auth.actions';
-import * as AuthSelectors from '../store/selectors/auth.selectors';
 import { CoreState } from '../store/reducers';
+import * as AuthSelectors from '../store/selectors/auth.selectors';
 
 @Injectable({
   providedIn: 'root'

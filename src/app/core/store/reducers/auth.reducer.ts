@@ -18,7 +18,7 @@ export function reducer(_state: State | undefined, _action: Action) {
   return createReducer(
     INITIAL_STATE,
 
-    on(AuthActions.init, AuthActions.store, (state, action) => ({
+    on(AuthActions.init, AuthActions.receive, (state, action) => ({
       ...state,
       userName: action.userName,
       token: action.token,

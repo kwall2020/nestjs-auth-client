@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-  CognitoUser,
-  ICognitoUserData,
-  CognitoUserPool,
-  ICognitoUserPoolData,
   AuthenticationDetails,
+  CognitoRefreshToken,
+  CognitoUser,
+  CognitoUserPool,
   CognitoUserSession,
-  CognitoRefreshToken
+  ICognitoUserData,
+  ICognitoUserPoolData
 } from 'amazon-cognito-identity-js';
 import { Observable, Observer } from 'rxjs';
 
@@ -51,11 +51,7 @@ export class AuthService {
             }
           );
         },
-        onSuccess: (
-          session: CognitoUserSession,
-          userConfirmationNecessary: boolean
-        ) => {
-          console.log(session, userConfirmationNecessary);
+        onSuccess: (session: CognitoUserSession) => {
           observer.next(session);
           observer.complete();
         },

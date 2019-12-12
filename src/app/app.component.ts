@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { AuthService } from './core/services';
+import { Store } from '@ngrx/store';
+import { CoreState } from './core/store/reducers';
+import * as AuthActions from './core/store/actions/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +9,14 @@ import { AuthService } from './core/services';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private auth: AuthService) {}
+  constructor(private store: Store<CoreState>) {}
 
   onTestClick() {
-    this.auth.authenticate('kwall2004@gmail.com', '9lS*8Wbl^z0N*Ugn');
+    this.store.dispatch(
+      AuthActions.get({
+        userName: 'kwall2004@gmail.com',
+        password: '9lS*8Wbl^z0N*Ugn'
+      })
+    );
   }
 }

@@ -14,9 +14,9 @@ export class AppEffects {
       ofType(AppActions.requestHello),
       mergeMap(() =>
         this.appService.getHello().pipe(
-          mergeMap((response: string) => [
+          mergeMap((response: any) => [
             AppActions.receiveHello({
-              text: response
+              text: response.text
             })
           ]),
           catchError(response => {

@@ -27,9 +27,7 @@ export class InterceptorService implements HttpInterceptor {
     request: HttpRequest<any>
   ): Observable<HttpRequest<any>> {
     return this.store.select(AuthSelectors.token).pipe(
-      skipWhile(
-        token => this.isTokenRefreshPending && token && token === this.token
-      ),
+      skipWhile(token => this.isTokenRefreshPending && token === this.token),
       take(1),
       mergeMap(token => {
         this.token = token;
@@ -65,7 +63,17 @@ export class InterceptorService implements HttpInterceptor {
 
             if (!this.isTokenRefreshPending) {
               this.isTokenRefreshPending = true;
-              this.store.dispatch(AuthActions.refresh());
+
+              if (!this.token) {
+                this.store.dispatch(
+                  AuthActions.request({
+                    userName: 'kwall2004@gmail.com',
+                    password: '9lS*8Wbl^z0N*Ugn'
+                  })
+                );
+              } else {
+                this.store.dispatch(AuthActions.refresh());
+              }
             }
 
             return this.getNewRequest(request).pipe(

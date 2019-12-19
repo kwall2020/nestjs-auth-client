@@ -27,4 +27,23 @@ export class AppEffects {
       )
     )
   );
+
+  requestTransactions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.requestTransactions),
+      mergeMap(() =>
+        this.appService.getTransactions().pipe(
+          mergeMap((response: any) => [
+            AppActions.receiveTransactions({
+              transactions: response
+            })
+          ]),
+          catchError(response => {
+            console.error(response);
+            return [];
+          })
+        )
+      )
+    )
+  );
 }

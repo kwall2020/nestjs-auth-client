@@ -66,13 +66,13 @@ export class InterceptorService implements HttpInterceptor {
 
               if (!this.token) {
                 this.store.dispatch(
-                  AuthActions.request({
+                  AuthActions.requestToken({
                     userName: 'kwall2004@gmail.com',
                     password: '9lS*8Wbl^z0N*Ugn'
                   })
                 );
               } else {
-                this.store.dispatch(AuthActions.refresh());
+                this.store.dispatch(AuthActions.refreshToken());
               }
             }
 

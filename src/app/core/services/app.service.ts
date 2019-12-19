@@ -13,4 +13,8 @@ export class AppService {
   public getHello(): Observable<any> {
     return this.httpClient.get(`${environment.apiBaseUrl}`);
   }
+
+  public getTransactions(): Observable<any> {
+    return this.httpClient.get(`${environment.apiBaseUrl}/transaction`);
+  }
 }

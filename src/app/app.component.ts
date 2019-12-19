@@ -16,6 +16,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private isDestroyed$ = new Subject();
 
   text: string;
+  transactions: any[];
 
   constructor(private store: Store<CoreState>) {}
 
@@ -27,7 +28,15 @@ export class AppComponent implements OnInit, OnDestroy {
         next: text => (this.text = text)
       });
 
+    this.store
+      .select(AppSelectors.transactions)
+      .pipe(takeUntil(this.isDestroyed$))
+      .subscribe({
+        next: transactions => (this.transactions = transactions)
+      });
+
     this.store.dispatch(AppActions.requestHello());
+    this.store.dispatch(AppActions.requestTransactions());
   }
 
   ngOnDestroy() {

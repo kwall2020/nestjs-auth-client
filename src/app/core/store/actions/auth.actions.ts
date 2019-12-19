@@ -5,14 +5,14 @@ export const init = createAction(
   props<{ userName: string; token: string; refreshToken: string }>()
 );
 
-export const request = createAction(
-  '[auth] request',
+export const requestToken = createAction(
+  '[auth] request token',
   props<{ userName: string; password: string }>()
 );
 
-export const refresh = createAction('[auth] refresh');
+export const refreshToken = createAction('[auth] refresh token');
 
-export const receive = createAction(
-  '[auth] receive',
+export const receiveToken = createAction(
+  '[auth] receive token',
   props<{ userName: string; token: string; refreshToken: string }>()
 );

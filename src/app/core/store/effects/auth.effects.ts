@@ -35,13 +35,13 @@ export class AuthEffects {
     )
   );
 
-  request$ = createEffect(() =>
+  requestToken$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.request),
+      ofType(AuthActions.requestToken),
       mergeMap(action =>
         this.authService.authenticate(action.userName, action.password).pipe(
           mergeMap((response: CognitoUserSession) => [
-            AuthActions.receive({
+            AuthActions.receiveToken({
               userName: action.userName,
               token: response.getAccessToken().getJwtToken(),
               refreshToken: response.getRefreshToken().getToken()
@@ -56,20 +56,20 @@ export class AuthEffects {
     )
   );
 
-  refresh$ = createEffect(() =>
+  refreshToken$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.refresh),
+      ofType(AuthActions.refreshToken),
       withLatestFrom(
         this.store.select(AuthSelectors.userName),
         this.store.select(AuthSelectors.refreshToken)
       ),
       mergeMap(([_, userName, refreshToken]) =>
         this.authService.refresh(userName, refreshToken).pipe(
-          mergeMap((response: any) => [
-            AuthActions.receive({
+          mergeMap((response: CognitoUserSession) => [
+            AuthActions.receiveToken({
               userName,
-              token: response.accessToken.token,
-              refreshToken: response.refreshToken
+              token: response.getAccessToken().getJwtToken(),
+              refreshToken: response.getRefreshToken().getToken()
             })
           ]),
           catchError(response => {
@@ -81,9 +81,9 @@ export class AuthEffects {
     )
   );
 
-  receive$ = createEffect(() =>
+  receiveToken$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.receive),
+      ofType(AuthActions.receiveToken),
       tap({
         next: action => {
           if (action.userName) {

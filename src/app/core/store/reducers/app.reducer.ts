@@ -4,10 +4,12 @@ import * as AppActions from '../actions/app.actions';
 
 export interface State {
   text: string;
+  transactions: any[];
 }
 
 export const INITIAL_STATE: State = {
-  text: undefined
+  text: undefined,
+  transactions: undefined
 };
 
 export function reducer(_state: State | undefined, _action: Action) {
@@ -17,6 +19,11 @@ export function reducer(_state: State | undefined, _action: Action) {
     on(AppActions.receiveHello, (state, action) => ({
       ...state,
       text: action.text
+    })),
+
+    on(AppActions.receiveTransactions, (state, action) => ({
+      ...state,
+      transactions: action.transactions
     }))
   )(_state, _action);
 }

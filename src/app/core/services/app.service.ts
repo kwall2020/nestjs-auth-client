@@ -15,6 +15,8 @@ export class AppService {
   }
 
   public getTransactions(): Observable<any> {
-    return this.httpClient.get(`${environment.apiBaseUrl}/transaction`);
+    return this.httpClient.get(
+      `${environment.apiBaseUrl}/transaction?from=2019-01-01&to=2019-01-31&account=1`
+    );
   }
 }

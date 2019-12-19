@@ -42,14 +42,10 @@ export class AuthService {
             userAttributes,
             requiredAttributes
           );
-          cognitoUser.completeNewPasswordChallenge(
-            '9lS*8Wbl^z0N*Ugn',
-            requiredAttributes,
-            {
-              onSuccess: (session: CognitoUserSession) => console.log(session),
-              onFailure: (err: any) => console.error(err)
-            }
-          );
+          cognitoUser.completeNewPasswordChallenge('', requiredAttributes, {
+            onSuccess: (session: CognitoUserSession) => console.log(session),
+            onFailure: (err: any) => console.error(err)
+          });
         },
         onSuccess: (session: CognitoUserSession) => {
           observer.next(session);

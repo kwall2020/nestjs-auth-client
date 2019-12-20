@@ -50,16 +50,43 @@ export class AuthEffects {
               refreshToken: response.getRefreshToken().getToken()
             })
           ]),
-          catchError(response => {
-            console.error(response);
-            this.snackBarService.open(response.message, 'error', {
-              duration: 5000,
-              verticalPosition: 'top'
-            });
-            this.store.dispatch(AppActions.login());
+          catchError(error => {
+            console.error(error);
+            if (error.code === 'PasswordResetRequiredException') {
+              this.store.dispatch(
+                AppActions.resetPassword({ userName: action.userName })
+              );
+            } else {
+              this.snackBarService.open(error.message, 'error', {
+                duration: 5000,
+                verticalPosition: 'top'
+              });
+              this.store.dispatch(AppActions.login());
+            }
             return [];
           })
         )
+      )
+    )
+  );
+
+  resetPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.resetPassword),
+      mergeMap(action =>
+        this.authService
+          .resetPassword(
+            action.userName,
+            action.confirmationCode,
+            action.newPassword
+          )
+          .pipe(
+            mergeMap(() => []),
+            catchError(response => {
+              console.error(response);
+              return [];
+            })
+          )
       )
     )
   );

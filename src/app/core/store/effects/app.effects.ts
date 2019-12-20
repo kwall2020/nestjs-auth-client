@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { catchError, mergeMap, take } from 'rxjs/operators';
 
 import { LoginComponent } from '../../../shared/components/login/login.component';
+import { ResetPasswordComponent } from '../../../shared/components/reset-password/reset-password.component';
 import { AppService } from '../../services';
 import * as AppActions from '../actions/app.actions';
 import * as AuthActions from '../actions/auth.actions';
@@ -56,6 +57,34 @@ export class AppEffects {
                 AuthActions.requestToken({
                   userName: value.userName,
                   password: value.password
+                })
+              );
+            }
+          });
+        return [];
+      })
+    )
+  );
+
+  resetPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.resetPassword),
+      mergeMap(action => {
+        this.dialogService
+          .open(ResetPasswordComponent)
+          .afterClosed()
+          .pipe(take(1))
+          .subscribe({
+            next: value => {
+              if (!value) {
+                return;
+              }
+
+              this.store.dispatch(
+                AuthActions.resetPassword({
+                  userName: action.userName,
+                  confirmationCode: value.confirmationCode,
+                  newPassword: value.newPassword
                 })
               );
             }

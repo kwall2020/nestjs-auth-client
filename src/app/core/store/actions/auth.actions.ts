@@ -10,6 +10,11 @@ export const requestToken = createAction(
   props<{ userName: string; password: string }>()
 );
 
+export const resetPassword = createAction(
+  '[auth] reset password',
+  props<{ userName: string; confirmationCode: string; newPassword: string }>()
+);
+
 export const refreshToken = createAction('[auth] refresh token');
 
 export const receiveToken = createAction(

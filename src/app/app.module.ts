@@ -21,9 +21,10 @@ import { effects } from './core/store/effects';
 import { metaReducers, reducers } from './core/store/reducers';
 import { CustomSerializer } from './core/store/reducers/router.reducer';
 import { LoginComponent } from './shared/components/login/login.component';
+import { ResetPasswordComponent } from './shared/components/reset-password/reset-password.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
+  declarations: [AppComponent, LoginComponent, ResetPasswordComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -58,6 +59,6 @@ import { LoginComponent } from './shared/components/login/login.component';
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [LoginComponent]
+  entryComponents: [LoginComponent, ResetPasswordComponent]
 })
 export class AppModule {}

@@ -9,6 +9,11 @@ export const receiveHello = createAction(
 
 export const login = createAction('[app] login');
 
+export const resetPassword = createAction(
+  '[app] reset password',
+  props<{ userName: string }>()
+);
+
 export const requestTransactions = createAction('[app] request transactions');
 
 export const receiveTransactions = createAction(

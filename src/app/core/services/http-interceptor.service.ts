@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, mergeMap, skipWhile, take } from 'rxjs/operators';
 
+import * as AppActions from '../store/actions/app.actions';
 import * as AuthActions from '../store/actions/auth.actions';
 import { CoreState } from '../store/reducers';
 import * as AuthSelectors from '../store/selectors/auth.selectors';
@@ -65,12 +66,7 @@ export class InterceptorService implements HttpInterceptor {
               this.isTokenRefreshPending = true;
 
               if (!this.token) {
-                this.store.dispatch(
-                  AuthActions.requestToken({
-                    userName: 'kwall2004@gmail.com',
-                    password: '9lS*8Wbl^z0N*Ugn'
-                  })
-                );
+                this.store.dispatch(AppActions.login());
               } else {
                 this.store.dispatch(AuthActions.refreshToken());
               }

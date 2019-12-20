@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-end align-items-center mb-4">
+  <div style="margin-top: -15px; margin-right: -15px;">
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon inline="true">close</mat-icon>
+    </button>
+  </div>
+</div>
+<form #form="ngForm" class="d-flex flex-column" (ngSubmit)="onSubmit(form)">
+  <mat-form-field>
+    <input matInput placeholder="User Name" autocomplete="off" name="userName" ngModel #userName="ngModel" required />
+    <mat-error *ngIf="!!userName.errors?.required">
+      required
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="password" matInput placeholder="Password" autocomplete="off" name="password" ngModel
+      #password="ngModel" required />
+    <mat-error *ngIf="!!password.errors?.required">
+      required
+    </mat-error>
+  </mat-form-field>
+  <div class="d-flex justify-content-end mt-4">
+    <button mat-stroked-button mat-dialog-close type="button" class="mr-2 cancel">
+      cancel
+    </button>
+    <button mat-stroked-button type="submit" class="save">
+      ok
+    </button>
+  </div>
+</form>

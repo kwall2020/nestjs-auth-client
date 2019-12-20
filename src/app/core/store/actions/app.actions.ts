@@ -7,6 +7,8 @@ export const receiveHello = createAction(
   props<{ text: string }>()
 );
 
+export const login = createAction('[app] login');
+
 export const requestTransactions = createAction('[app] request transactions');
 
 export const receiveTransactions = createAction(

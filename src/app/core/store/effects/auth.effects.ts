@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 import {
   Actions,
   createEffect,
@@ -10,6 +11,7 @@ import { CognitoUserSession } from 'amazon-cognito-identity-js';
 import { catchError, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AuthService } from '../../services';
+import * as AppActions from '../actions/app.actions';
 import * as AuthActions from '../actions/auth.actions';
 import { CoreState } from '../reducers';
 import * as AuthSelectors from '../selectors/auth.selectors';
@@ -19,7 +21,8 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private store: Store<CoreState>,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBarService: MatSnackBar
   ) {}
 
   init$ = createEffect(() =>
@@ -49,6 +52,11 @@ export class AuthEffects {
           ]),
           catchError(response => {
             console.error(response);
+            this.snackBarService.open(response.message, 'error', {
+              duration: 5000,
+              verticalPosition: 'top'
+            });
+            this.store.dispatch(AppActions.login());
             return [];
           })
         )

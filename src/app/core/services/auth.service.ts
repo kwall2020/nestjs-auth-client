@@ -36,24 +36,20 @@ export class AuthService {
 
     return new Observable((observer: Observer<CognitoUserSession>) => {
       cognitoUser.authenticateUser(authenticationDetails, {
-        newPasswordRequired: (userAttributes: any, requiredAttributes: any) => {
-          console.log(
-            'new password required',
-            userAttributes,
-            requiredAttributes
-          );
-          cognitoUser.completeNewPasswordChallenge('', requiredAttributes, {
-            onSuccess: (session: CognitoUserSession) => console.log(session),
-            onFailure: (err: any) => console.error(err)
-          });
-        },
         onSuccess: (session: CognitoUserSession) => {
           observer.next(session);
           observer.complete();
         },
         onFailure: err => {
           console.error(err);
-          observer.error(err);
+          if (err.code === 'PasswordResetRequiredException') {
+            cognitoUser.confirmPassword('', '', {
+              onSuccess: () => console.log('password reset success'),
+              onFailure: _err => console.error(_err)
+            });
+          } else {
+            observer.error(err);
+          }
           observer.complete();
         }
       });

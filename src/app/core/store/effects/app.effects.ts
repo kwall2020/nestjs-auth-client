@@ -20,25 +20,6 @@ export class AppEffects {
     private dialogService: MatDialog
   ) {}
 
-  requestHello$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AppActions.requestHello),
-      mergeMap(() =>
-        this.appService.getHello().pipe(
-          mergeMap((response: any) => [
-            AppActions.receiveHello({
-              text: response.text
-            })
-          ]),
-          catchError(response => {
-            console.error(response);
-            return [];
-          })
-        )
-      )
-    )
-  );
-
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.login),

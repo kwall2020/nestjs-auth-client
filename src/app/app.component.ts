@@ -15,19 +15,11 @@ import * as AppSelectors from './core/store/selectors/app.selectors';
 export class AppComponent implements OnInit, OnDestroy {
   private isDestroyed$ = new Subject();
 
-  text: string;
   transactions: any[];
 
   constructor(private store: Store<CoreState>) {}
 
   ngOnInit() {
-    this.store
-      .select(AppSelectors.text)
-      .pipe(takeUntil(this.isDestroyed$))
-      .subscribe({
-        next: text => (this.text = text)
-      });
-
     this.store
       .select(AppSelectors.transactions)
       .pipe(takeUntil(this.isDestroyed$))
@@ -35,7 +27,6 @@ export class AppComponent implements OnInit, OnDestroy {
         next: transactions => (this.transactions = transactions)
       });
 
-    this.store.dispatch(AppActions.requestHello());
     this.store.dispatch(AppActions.requestTransactions());
   }
 

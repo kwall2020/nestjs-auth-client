@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://accounting-48336.com'
+  // apiBaseUrl: 'https://accounting-48336.com'
+  apiBaseUrl: 'http://localhost:3000'
 };
 
 /*

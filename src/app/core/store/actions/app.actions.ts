@@ -1,12 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 
-export const requestHello = createAction('[app] request hello');
-
-export const receiveHello = createAction(
-  '[app] receive hello',
-  props<{ text: string }>()
-);
-
 export const login = createAction('[app] login');
 
 export const resetPassword = createAction(

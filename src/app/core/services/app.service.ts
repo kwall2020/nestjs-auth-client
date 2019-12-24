@@ -10,8 +10,8 @@ import { environment } from '../../../environments/environment';
 export class AppService {
   constructor(private httpClient: HttpClient) {}
 
-  public getHello(): Observable<any> {
-    return this.httpClient.get(`${environment.apiBaseUrl}`);
+  public getTransaction(): Observable<any> {
+    return this.httpClient.get(`${environment.apiBaseUrl}/transaction/13973`);
   }
 
   public getTransactions(): Observable<any> {

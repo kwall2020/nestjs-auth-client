@@ -19,4 +19,8 @@ export class AppService {
       `${environment.apiBaseUrl}/transaction?from=2019-01-01&to=2019-01-31&account=1`
     );
   }
+
+  public getCategories(): Observable<any> {
+    return this.httpClient.get(`${environment.apiBaseUrl}/category`);
+  }
 }

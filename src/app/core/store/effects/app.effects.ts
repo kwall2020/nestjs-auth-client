@@ -93,4 +93,22 @@ export class AppEffects {
       )
     )
   );
+
+  requestCategories$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.requestCategories),
+      mergeMap(() =>
+        this.appService.getCategories().pipe(
+          mergeMap((response: any) => {
+            console.log(response);
+            return [];
+          }),
+          catchError(response => {
+            console.error(response);
+            return [];
+          })
+        )
+      )
+    )
+  );
 }

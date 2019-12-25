@@ -13,3 +13,5 @@ export const receiveTransactions = createAction(
   '[app] receive transactions',
   props<{ transactions: any[] }>()
 );
+
+export const requestCategories = createAction('[app] request categories');

@@ -78,18 +78,28 @@ export class AppEffects {
   requestTransactions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.requestTransactions),
-      mergeMap(() =>
-        this.appService.getTransactions().pipe(
-          mergeMap((response: any) => [
-            AppActions.receiveTransactions({
-              transactions: response
+      mergeMap(action =>
+        this.appService
+          .getTransactions(
+            action.categoryDescription,
+            action.from,
+            action.to,
+            action.accountId
+          )
+          .pipe(
+            mergeMap((response: any) => {
+              console.log(response);
+              return [
+                AppActions.receiveTransactions({
+                  transactions: response
+                })
+              ];
+            }),
+            catchError(response => {
+              console.error(response);
+              return [];
             })
-          ]),
-          catchError(response => {
-            console.error(response);
-            return [];
-          })
-        )
+          )
       )
     )
   );
@@ -97,17 +107,19 @@ export class AppEffects {
   requestCategories$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.requestCategories),
-      mergeMap(() =>
-        this.appService.getCategories().pipe(
-          mergeMap((response: any) => {
-            console.log(response);
-            return [];
-          }),
-          catchError(response => {
-            console.error(response);
-            return [];
-          })
-        )
+      mergeMap(action =>
+        this.appService
+          .getCategories(action.from, action.to, action.accountId)
+          .pipe(
+            mergeMap((response: any) => {
+              console.log(response);
+              return [];
+            }),
+            catchError(response => {
+              console.error(response);
+              return [];
+            })
+          )
       )
     )
   );
